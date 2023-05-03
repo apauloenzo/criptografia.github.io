@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Criptografia em JavaScript</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<h1>Criptografia em JavaScript</h1>
+	
+	<label for="palavra">Digite uma palavra:</label>
+	<input type="text" id="palavra">
+	<button onclick="criptografar()">Criptografar</button>
+	<p id="resultado"></p>
+
+	<script>
+		function criptografar() {
+			let palavra = document.getElementById('palavra').value;
+			let novaPalavra = '';
+
+			// Deslocar as letras para a direita na tabela ASCII
+			for (let i = 0; i < palavra.length; i++) {
+				let codigoAscii = palavra.charCodeAt(i);
+				if (codigoAscii >= 65 && codigoAscii <= 90) { // Letras maiúsculas
+					codigoAscii = (codigoAscii - 65 + 3) % 26 + 65;
+				} else if (codigoAscii >= 97 && codigoAscii <= 122) { // Letras minúsculas
+					codigoAscii = (codigoAscii - 97 + 3) % 26 + 97;
+				}
+				novaPalavra += String.fromCharCode(codigoAscii);
+			}
+
+			// Inverter a linha da palavra
+			novaPalavra = novaPalavra.split('').reverse().join('');
+
+			// Deslocar os caracteres a partir da metade para a esquerda na tabela ASCII
+			let metade = Math.floor(novaPalavra.length / 2);
+			for (let i = metade; i < novaPalavra.length; i++) {
+				let codigoAscii = novaPalavra.charCodeAt(i);
+				codigoAscii = (codigoAscii - 1 + 256) % 256;
+				novaPalavra = novaPalavra.substr(0, i) + String.fromCharCode(codigoAscii) + novaPalavra.substr(i + 1);
+			}
+
+			document.getElementById('resultado').innerText = novaPalavra;
+		}
+	</script>
+</body>
+</html>
